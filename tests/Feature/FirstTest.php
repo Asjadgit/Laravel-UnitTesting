@@ -63,21 +63,41 @@ class FirstTest extends TestCase
     //     ]);
     // }
 
-    public function test_delete_in_db()
+    // public function test_delete_in_db()
+    // {
+    //     $user = DB::table('users')->where('email','updated@test.com')->first();
+    //     $response = $this->post("/deleteuser/{$user->id}");
+
+    //     $response->assertStatus(200);
+
+    //     $response->assertSee('User deleted successfully');
+
+    //     $this->assertDatabaseMissing('users',[
+    //         'id' => $user->id,
+    //         'name' => 'Updated Name',
+    //         'email' => 'updated@test.com'
+    //     ]);
+    // }
+
+    // test function for inserting data
+    public function test_data_in_db()
     {
-        $user = DB::table('users')->where('email','updated@test.com')->first();
-        $response = $this->post("/deleteuser/{$user->id}");
+        $data = [
+            'name' => 'test user1',
+            'email' => 'test1@test.com',
+            'password' => bcrypt('password')
+        ];
+
+        // send to route for testing
+        $response = $this->post('api/test', $data);
 
         $response->assertStatus(200);
 
-        $response->assertSee('User deleted successfully');
+        $response->assertSee('User created successfully');
 
-        $this->assertDatabaseMissing('users',[
-            'id' => $user->id,
-            'name' => 'Updated Name',
-            'email' => 'updated@test.com'
+        $this->assertDatabaseHas('users', [
+            'email' => 'test1@test.com',
         ]);
     }
-
 
 }
